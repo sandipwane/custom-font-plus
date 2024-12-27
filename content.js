@@ -1,53 +1,62 @@
 let config = {
-    primaryFont: 'JetBrains Mono',
-    fallbackFont: 'Arial'
-  };
-  
-  // function applyFonts() {
-  //   const style = document.createElement('style');
-  //   style.textContent = `
-  //     * {
-  //       font-family: "${config.primaryFont}", "${config.fallbackFont}" !important;
-  //     }
-  //     pre, code {
-  //       font-family: "${config.primaryFont}" !important;
-  //     }
-  //   `;
-  //   document.head.appendChild(style);
-  // }
+  primaryFont: 'JetBrains Mono',
+  fallbackFont: 'Arial',
+  isEnabled: true,
+  disabledSites: []
+};
 
-  function applyFonts() {
-    const style = document.createElement('style');
-    style.textContent = `
-      @font-face {
-        font-family: 'MaterialIconsFallback';
-        src: local('Material Icons');
-        unicode-range: U+E000-F8FF;
-      }
-      
-      * {
-        font-family: 'MaterialIconsFallback', "${config.primaryFont}", "${config.fallbackFont}" !important;
-      }
-      
-      .material-icons {
-        font-family: 'Material Icons' !important;
-      }
-    `;
-    document.head.appendChild(style);
-  }
-  
-  chrome.storage.sync.get(['primaryFont', 'fallbackFont'], (result) => {
-    if (result.primaryFont) config.primaryFont = result.primaryFont;
-    if (result.fallbackFont) config.fallbackFont = result.fallbackFont;
-    applyFonts();
-  });
-  
-  chrome.runtime.onMessage.addListener((message) => {
-    if (message.type === 'UPDATE_FONTS') {
-      chrome.storage.sync.get(['primaryFont', 'fallbackFont'], (result) => {
-        if (result.primaryFont) config.primaryFont = result.primaryFont;
-        if (result.fallbackFont) config.fallbackFont = result.fallbackFont;
-        applyFonts();
-      });
+function getCurrentHost() {
+  return window.location.hostname;
+}
+
+function applyFonts() {
+  const currentHost = getCurrentHost();
+  if (!config.isEnabled || config.disabledSites.includes(currentHost)) return;
+
+  const style = document.createElement('style');
+  style.id = 'customfont-plus-style';
+  style.textContent = `
+    @font-face {
+      font-family: 'MaterialIconsFallback';
+      src: local('Material Icons');
+      unicode-range: U+E000-F8FF;
     }
-  });
+    
+    * {
+      font-family: 'MaterialIconsFallback', "${config.primaryFont}", "${config.fallbackFont}" !important;
+    }
+    
+    .material-icons {
+      font-family: 'Material Icons' !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function removeFonts() {
+  const style = document.getElementById('customfont-plus-style');
+  if (style) style.remove();
+}
+
+chrome.storage.sync.get(['primaryFont', 'fallbackFont', 'isEnabled', 'disabledSites'], (result) => {
+  Object.assign(config, result);
+  if (config.isEnabled) applyFonts();
+});
+
+chrome.runtime.onMessage.addListener((message) => {
+  switch(message.type) {
+    case 'UPDATE_FONTS':
+      Object.assign(config, message.config);
+      removeFonts();
+      if (config.isEnabled) applyFonts();
+      break;
+    case 'TOGGLE_SITE':
+      const host = getCurrentHost();
+      config.disabledSites = message.enabled ? 
+        config.disabledSites.filter(site => site !== host) :
+        [...config.disabledSites, host];
+      chrome.storage.sync.set({ disabledSites: config.disabledSites });
+      message.enabled ? applyFonts() : removeFonts();
+      break;
+  }
+});
