@@ -1,8 +1,9 @@
 {
     "manifest_version": 3,
-    "name": "Smart Font Substitution",
+    "name": "Custom Font+",
     "version": "1.0",
-    "permissions": ["storage", "activeTab"],
+    "permissions": ["storage", "activeTab", "tabs"],
+    "host_permissions": ["<all_urls>"],
     "action": {
       "default_popup": "popup.html"
     },
