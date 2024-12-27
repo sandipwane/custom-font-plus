@@ -38,11 +38,15 @@ function removeFonts() {
   if (style) style.remove();
 }
 
+let style = document.createElement('style');
+style.textContent = `*{opacity:0 !important}`;
+document.documentElement.appendChild(style);
+
 chrome.storage.sync.get(['primaryFont', 'fallbackFont', 'isEnabled', 'disabledSites'], (result) => {
   Object.assign(config, result);
   if (config.isEnabled) applyFonts();
+  style.remove(); // Remove opacity style
 });
-
 chrome.runtime.onMessage.addListener((message) => {
   switch(message.type) {
     case 'UPDATE_FONTS':

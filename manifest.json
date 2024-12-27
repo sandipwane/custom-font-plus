@@ -10,6 +10,7 @@
     "content_scripts": [{
       "matches": ["<all_urls>"],
       "js": ["content.js"],
-      "css": ["styles.css"]
+      "css": ["styles.css"],
+      "run_at": "document_start" 
     }]
   }
