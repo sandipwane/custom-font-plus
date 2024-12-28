@@ -3,6 +3,7 @@
 
 A Chrome extension that enforces custom fonts while preserving Material Icons and special characters.
 
+## [Extension Preview](https://www.youtube.com/watch?v=t9OofOiEAqU)
 ![Demo](./demo.gif)
 
 ## Features
