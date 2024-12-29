@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Font Settings</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h2>Font Settings</h2>
+  
+  <div class="toggle-container">
+    <label>Apply to All Sites</label>
+    <button id="globalToggle" class="toggle-button">Toggle</button>
+  </div>
+  
+  <div id="siteToggleContainer" class="toggle-container">
+    <label>Use on This Site</label>
+    <button id="siteToggle" class="toggle-button">Toggle</button>
+  </div>
+  
+  <div class="input-container">
+    <input type="text" id="primaryFont" placeholder="Primary Font">
+    <input type="text" id="fallbackFont" placeholder="Fallback Font">
+    <button id="save" class="save-button">Save</button>
+  </div>
+
+  <div id="permissionRequest" class="permission-container">
+    <button id="requestPermission">Grant Site Access</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

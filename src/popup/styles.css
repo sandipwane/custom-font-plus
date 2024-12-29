@@ -1,0 +1,105 @@
+:root {
+    --background: #fafafa;
+    --foreground: #000000;
+    --primary: #5E6AD2;
+    --surface: #ffffff;
+    --border: #e5e5e5;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #1b1b1d;
+      --foreground: #ffffff;
+      --surface: #242426;
+      --border: #2e2e30;
+    }
+  }
+
+  body {
+    width: 320px;
+    padding: 16px;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont;
+    background: var(--background);
+    color: var(--foreground);
+    margin: 0;
+  }
+  
+  h2 {
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0 0 16px;
+  }
+
+  .control-group {
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .toggle-switch {
+    width: 36px;
+    height: 20px;
+    background: var(--border);
+    border-radius: 32px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .toggle-switch.active {
+    background: var(--primary);
+  }
+
+  .toggle-switch::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: all 0.2s;
+  }
+
+  .toggle-switch.active::after {
+    transform: translateX(16px);
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--foreground);
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  button {
+    width: 100%;
+    padding: 8px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  button:hover {
+    opacity: 0.9;
+  }
+
+  label {
+    font-size: 13px;
+    color: var(--foreground);
+  }
